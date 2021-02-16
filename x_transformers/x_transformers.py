@@ -177,12 +177,8 @@ class BetterRelativePositionBias(nn.Module):
         position_ids_r = torch.arange(
             keys.shape[2], dtype=torch.long, device=queries.device).view(1, -1)
 
-        distance = (position_ids_l - position_ids_r).clip(-self.max_distance + self.cls_token_num,
-                                                          self.max_distance - self.cls_token_num)
-
-        for cls_token in reversed(range(self.cls_token_num)):
-            distance[:, cls_token] = - cls_token + self.max_distance
-            distance[cls_token, :] = cls_token - self.max_distance
+        distance = (position_ids_l - position_ids_r).clip(-self.max_distance,
+                                                          self.max_distance)
 
         positional_embedding = self.distance_embedding(
             distance + self.max_distance)
