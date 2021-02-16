@@ -184,9 +184,9 @@ class BetterRelativePositionBias(nn.Module):
             distance + self.max_distance)
 
         relative_position_scores_query = torch.einsum(
-            "nlhd,lsd->nhls", queries, positional_embedding)
+            "nhld,lsd->nhls", queries, positional_embedding)
         relative_position_scores_key = torch.einsum(
-            "nshd,lsd->nhls", keys, positional_embedding)
+            "nhsd,lsd->nhls", keys, positional_embedding)
         qk_dots = qk_dots + relative_position_scores_query + relative_position_scores_key
         return qk_dots
 
